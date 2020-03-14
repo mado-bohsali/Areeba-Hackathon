@@ -1,0 +1,6 @@
+framework module Pods_Areeba_Hackathon {
+  umbrella header "Pods-Areeba Hackathon-umbrella.h"
+
+  export *
+  module * { export * }
+}

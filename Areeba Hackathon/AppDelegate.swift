@@ -3,10 +3,10 @@
 //  Areeba Hackathon
 //
 //  Created by Mohamad El Bohsaly on 3/14/20.
-//  Copyright © 2020 Mohamad El Bohsaly. All rights reserved.
 //
 
 import UIKit
+import Parse //Connect to Back4Apps server
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +15,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "bBXGTjo2UvVchEiidgDiROxces5051RkJVTMeHGN"
+            $0.clientKey = "nVKQUP7FMP1obv7kbW07jhuT0p24dcg3PUiVSoqE"
+            $0.server = "https://parseapi.back4app.com"
+        }
+        
+        Parse.initialize(with: configuration)
+        
+        saveInstallationObject() //create a new parse installation object upon your app loading
+        
         return true
+    }
+    
+    func saveInstallationObject(){ //asynchronuously connect with the installation persisted to the Parse cloud
+        if let installation = PFInstallation.current(){
+            installation.saveInBackground {
+                (success: Bool, error: Error?) in
+                if (success) {
+                    print("You have successfully connected your app to Back4App!")
+                } else {
+                    if let myError = error{
+                        print(myError.localizedDescription)
+                    }else{
+                        print("Uknown error")
+                    }
+                }
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle
